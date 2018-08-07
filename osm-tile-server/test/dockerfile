@@ -1,0 +1,31 @@
+FROM ubuntu:bionic 
+
+# update and install the necessary requirement
+RUN apt update -y
+RUN apt install apt-utils -y
+RUN apt upgrade -y
+RUN apt install git -y
+RUN apt install unzip curl wget -y
+RUN apt install apache2 -y
+RUN apt install nodejs npm -y
+RUN apt install gdal-bin mapnik-utils -y
+RUN apt install --no-install-recommends build-essential -y
+RUN apt install --no-install-recommends autoconf libtool libmapnik-dev apache2-dev -y
+RUN npm install -g carto -y
+
+ENV textToReplace='s/;MAXZOOM=18/;MAXZOOM='
+ENV MAX_ZOOM=20
+ENV param='/g'
+ENV CARTO_VERSION=4.13.0
+
+
+# RUN apt install unzip curl -y
+
+
+
+
+# install apache requirement
+
+
+COPY ./init/ /usr/local/bin/
+CMD ["/bin/bash", "-i", "/usr/local/bin/test.1.sh"]

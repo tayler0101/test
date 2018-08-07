@@ -1,0 +1,15 @@
+FROM ubuntu:bionic 
+
+# update and install the necessary requirement
+RUN apt update -y
+RUN apt install apt-utils -y
+RUN apt upgrade -y
+RUN apt install apache2 -y
+RUN apt install unzip curl wget -y
+RUN apt install libcurl3-gnutls -y
+
+
+COPY ./init/ /usr/local/bin/
+# COPY ./000-default.conf /etc/apache2/sites-enabled/
+# COPY ./mod_tile.so /usr/lib/apache2/modules/
+CMD ["/bin/bash", "-i", "/usr/local/bin/apache.sh"]

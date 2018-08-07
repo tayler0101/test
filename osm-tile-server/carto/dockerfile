@@ -1,0 +1,12 @@
+FROM ubuntu:bionic 
+
+# update and install the necessary requirement
+RUN apt update -y
+RUN apt install apt-utils -y
+RUN apt upgrade -y
+RUN apt install unzip curl wget -y
+
+ENV CARTO_VERSION=4.13.0
+
+COPY ./init/ /usr/local/bin/
+CMD ["/bin/bash", "-i", "/usr/local/bin/carto.sh"]

@@ -1,0 +1,17 @@
+ARG POSTGIS_VESRSION=latest
+FROM mdillon/postgis:${POSTGIS_VESRSION}
+# FROM postgres:10
+
+# update and install the necessary requirement
+RUN apt-get update -y
+RUN apt install apt-utils -y
+RUN apt-get upgrade -y
+# RUN apt install --no-install-recommends postgresql postgresql-contrib -y
+# RUN apt install postgis postgresql-10-postgis-2.4 -y
+# COPY ./init/ /usr/local/bin/
+#  no need for install requremrt and git
+# nodejs and npm should be installed
+
+
+
+# CMD ["/bin/bash", "-i", "/usr/local/bin/prepareDB.sh"]

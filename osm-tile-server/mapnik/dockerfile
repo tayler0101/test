@@ -1,0 +1,14 @@
+FROM ubuntu:bionic 
+
+# update and install the necessary requirement
+RUN apt update -y
+RUN apt install apt-utils -y
+RUN apt upgrade -y
+RUN apt install git -y
+# RUN apt install unzip curl -y
+
+RUN apt install gdal-bin mapnik-utils -y
+
+
+COPY ./init/ /usr/local/bin/
+CMD ["/bin/bash", "-i", "/usr/local/bin/mapnik.sh"]

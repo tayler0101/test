@@ -1,0 +1,31 @@
+FROM ubuntu:bionic 
+
+# update and install the necessary requirement
+RUN apt update -y
+RUN apt install apt-utils -y
+RUN apt upgrade -y
+
+
+RUN apt install wget -y
+## TODO - remove after test complete
+RUN apt install iputils-ping -y
+
+
+## TODO - add feture to download multimap -if it work
+ENV OSM_MAP_URL='https://download.geofabrik.de/europe/germany/nordrhein-westfalen/duesseldorf-regbez-latest.osm.pbf'
+ENV POSTGRES_DB=osm
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=postgres
+ENV POSTGRES_DB=osm
+
+# install osm2pgsql
+RUN apt install --no-install-recommends osm2pgsql -y
+## TODO - check if image is healthy
+RUN osm2pgsql --version
+
+COPY ./init/ /usr/local/bin/
+RUN ls -la /usr/local/bin/ | grep map
+
+CMD ["/bin/bash", "-i", "/usr/local/bin/map-importer.sh"]
+
+

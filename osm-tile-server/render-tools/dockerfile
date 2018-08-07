@@ -1,0 +1,22 @@
+FROM ubuntu:bionic 
+
+# update and install the necessary requirement
+RUN apt update -y
+RUN apt install apt-utils -y
+RUN apt upgrade -y
+RUN apt install git -y
+# RUN apt install systemd -y
+# RUN apt install daemon
+# RUN apt install unzip curl wget -y
+RUN apt install apache2 -y
+
+ENV textToReplace='s/;MAXZOOM=18/;MAXZOOM='
+ENV MAX_ZOOM=20
+ENV param='/g'
+
+# install apache requirement
+RUN apt install --no-install-recommends build-essential -y
+RUN apt install --no-install-recommends autoconf libtool libmapnik-dev apache2-dev -y
+
+COPY ./init/ /usr/local/bin/
+CMD ["/bin/bash", "-i", "/usr/local/bin/mode_tile.sh"]

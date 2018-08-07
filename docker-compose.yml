@@ -1,17 +1,74 @@
-version: '3.2'
+version: '3.6'
 services:
-  potgis:
+  postgis-db:
     restart: 'always'
+    hostname: "postgis-db"
     environment:
       - "POSTGRES_USER=postgres"
       - "POSTGRES_PASSWORD=postgres"
-      - "POSTGRES_DB=osm"
+    # Uncomment to use the postgis database from outside the docker network
     ports:
-      - "5432:5432"
-    build: './osm-client/'
-  # ubuntu:
-  #   restart: 'always'
-  #   build: './osm-client/'
-  #   container_name: 'Ubuntu-osm-client'
+     - "5432:5432"
+     - "8089:80"
+    build: './osm-tile-server/postgis'
+    volumes:
+      - osm-tile-server:/osm-tile-server
+
+  # osm2pgsql:
+  #   container_name: 'osm-tile-server-osm2pgsql'
+  #   build: './osm-tile-server/osm2pgsql'
+  #   volumes:
+  #     - osm-tile-server:/osm-tile-server
+  #   depends_on:
+  #     - postgis-db
+
+  # carto:
+  #   container_name: 'osm-tile-server-carto'
+  #   build: './osm-tile-server/carto'
+  #   volumes:
+  #     - tools:/tools
+  #   environment:
+  #     - "CARTO_VERSION=4.13.0"
+
+  # mapnik:
+  #   container_name: 'osm-tile-server-mapnik'
+  #   build: './osm-tile-server/mapnik'
+  #   volumes:
+  #     - tools:/tools
+  #   depends_on:
+  #     - carto
+  #   # depends_on:
+  #   #   carto:
+  #   #     condition: service_healty
+
+  # render-tools:
+  #   container_name: 'osm-tile-server-rt'
+  #   environment:
+  #     - "MAX_ZOOM=22"    
+  #   build: './osm-tile-server/render-tools'
+  #   volumes:
+  #     - tools:/tools
+
   #   ports:
-  #     - "5432:5432"
+  #    - "8855:80"
+
+  # apache:
+  #   container_name: 'osm-tile-serverapache'
+  #   build: './osm-tile-server/apache'
+  #   volumes:
+  #     - tools:/tools
+
+  test2:
+    container_name: 'osm-tile-server-test2'
+    build: './osm-tile-server/test'
+    environment:
+      - "rebuild=1" 
+    volumes:
+      - osm-tile-server:/osm-tile-server
+    ports:
+     - "8855:80"
+
+
+volumes:
+  tools:
+  osm-tile-server:

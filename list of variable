@@ -1,3 +1,24 @@
-POSTGRES_VERSION
-POSTGIS_MAJOR
-POSTGIS_VERSION
+      - "POSTGIS_VESRSION=latest"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+      - "POSTGRES_DB=osm"
+      - "OSM_MAP_URL=https://download.geofabrik.de/europe/germany/nordrhein-westfalen/duesseldorf-regbez.html"
+      - "MAX_ZOOM=20"
+
+
+
+      trap "Importing in progress, ignored SIGINT & SIGTERM." SIGINT SIGTERM
+    PGPASSWORD=postgres osm2pgsql --create --slim --cache 2000 --host 172.20.0.2 --database osm --username postgres osm-tile-server/map/
+    PGPASSWORD=postgres osm2pgsql -c --slim -C 2000 -H postgis-db -d osm --username postgres -S osm-tile-server/map/openstreetmap-carto.style osm-tile-server/map/map.osm.pbf
+
+    tail -F anything
+
+
+
+
+
+    sizes
+
+
+    carto
+    mode_tile 894
